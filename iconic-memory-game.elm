@@ -81,14 +81,35 @@ subscriptions model =
 
 view : Model -> Html Msg
 view model =
-  div [] [
-    showGrid model
-  , input [ placeholder "Letters...", onInput CheckAnswer ] []
-  , br [] []
-  , text (toString model.score)
-  ]
+  div
+    [style
+      [ ("width", "40%")
+      , ("text-align", "center")
+      , ("margin", "auto")
+      ]
+    ]
+
+    [ showGrid model
+    , input [ placeholder "Letters...", onInput CheckAnswer ] []
+    , br [] []
+    , text (toString model.score)
+    ]
 
 showGrid : Model -> Html Msg
 showGrid model =
-    div [] <| List.concatMap (\row -> [div [] <| List.concatMap (\letter -> [text <| String.fromList [letter]]) row, br [] []]) model.grid
-
+  let
+    tileStyle =
+      [ style
+        [ ("color", "navy")
+        , ("backgroundColor", "cornsilk")
+        , ("flex-grow", "1")
+        ] ]
+  in
+    div [] <|
+      List.concatMap
+        (\row -> [div [style [("display", "flex")]] <|
+          List.concatMap (\letter ->
+            [div tileStyle [text <| String.fromList [letter]]])
+            row
+          , br [] []])
+        model.grid
