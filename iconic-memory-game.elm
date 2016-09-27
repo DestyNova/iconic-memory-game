@@ -36,11 +36,11 @@ type alias Model =
 init : (Model, Cmd Msg)
 init =
   let initialState =
-    { grid = generateNewGrid (List.repeat 9 0) 3
+    { grid = generateNewGrid (List.repeat 12 0) 4
     , seekRow = 0
-    , cols = 3
+    , cols = 4
     , rows = 3
-    , showTime = 500
+    , showTime = 450
     , delay = 50
     , score = 0
     , error = ""
@@ -155,7 +155,7 @@ view : Model -> Html Msg
 view model =
   div
     [style
-      [ ("width", "40%")
+      [ ("width", "20%")
       , ("height", "75%")
       , ("text-align", "center")
       , ("margin", "auto")
