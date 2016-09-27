@@ -182,6 +182,7 @@ showGrid model =
         [ ("justify-content", "space-around")
         , ("align-items", "stretch")
         , ("display", "flex")
+        , ("font-size", "24pt")
         ]
       ]
 
