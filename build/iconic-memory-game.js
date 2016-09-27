@@ -8926,23 +8926,23 @@ var _user$project$Main$FlashGrid = function (a) {
 	return {ctor: 'FlashGrid', _0: a};
 };
 var _user$project$Main$flashGrid = function (model) {
-	var delay = _elm_lang$core$Basics$toFloat(model.showTime);
 	return A3(
 		_elm_lang$core$Task$perform,
 		_user$project$Main$TickFail,
 		_user$project$Main$FlashGrid,
-		_elm_lang$core$Process$sleep(delay));
+		_elm_lang$core$Process$sleep(
+			_elm_lang$core$Basics$toFloat(model.showTime)));
 };
 var _user$project$Main$PromptForAnswer = function (a) {
 	return {ctor: 'PromptForAnswer', _0: a};
 };
 var _user$project$Main$promptForAnswer = function (model) {
-	var delay = _elm_lang$core$Basics$toFloat(model.delay);
 	return A3(
 		_elm_lang$core$Task$perform,
 		_user$project$Main$TickFail,
 		_user$project$Main$PromptForAnswer,
-		_elm_lang$core$Process$sleep(delay));
+		_elm_lang$core$Process$sleep(
+			_elm_lang$core$Basics$toFloat(model.delay)));
 };
 var _user$project$Main$GetNewGrid = function (a) {
 	return {ctor: 'GetNewGrid', _0: a};
