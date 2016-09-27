@@ -25,6 +25,7 @@ type alias Model =
   , seekRow : Int
   , cols : Int
   , rows : Int
+  , showTime : Int
   , delay : Int
   , score : Int
   , error : String
@@ -39,6 +40,7 @@ init =
     , seekRow = 0
     , cols = 3
     , rows = 3
+    , showTime = 500
     , delay = 50
     , score = 0
     , error = ""
@@ -50,7 +52,7 @@ init =
 -- UPDATE
 
 type Msg
-  = StartRound | GetNewGrid (Int, List Int) | PromptForAnswer () | FlashGrid () | TickFail () | CheckAnswer String
+  = StartRound | GetNewGrid (Int, List Int) | PromptForAnswer () | FlashGrid () | TickFail () | CheckAnswer String | SpeedUp | SpeedDown | DelayUp | DelayDown
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -83,14 +85,25 @@ update msg model =
               let
                 numCorrect = sum <|
                   map2 (\a b -> if a==b then 1 else 0)
-                                   (String.toList letters)
+                                   (String.toList <| String.toUpper letters)
                                    row
                 rowScore = numCorrect * 100 // model.cols
               in
-                ({model | score = model.score + rowScore}, Cmd.none)
+                ({model | score = model.score + rowScore, showLetters = True}, Cmd.none)
       else
         (model, Cmd.none)
 
+    SpeedDown ->
+      ({ model | showTime = Basics.max 100 (model.showTime - 25) }, Cmd.none)
+
+    SpeedUp ->
+      ({ model | showTime = Basics.min 1000 (model.showTime + 25) }, Cmd.none)
+
+    DelayDown ->
+      ({ model | delay = Basics.max 25 (model.delay - 25) }, Cmd.none)
+
+    DelayUp ->
+      ({ model | delay = Basics.min 1000 (model.delay + 25) }, Cmd.none)
 
 generateNewGrid : List Int -> Int -> List (List Char)
 generateNewGrid grid cols =
@@ -111,19 +124,19 @@ subscriptions model =
 -- TASKS
 getNewGrid : Model -> Cmd Msg
 getNewGrid model =
-  Random.generate GetNewGrid <| Random.pair (Random.int 0 model.rows) (Random.list (model.cols * model.rows) (Random.int 0 25))
+  Random.generate GetNewGrid <| Random.pair (Random.int 0 (model.rows - 1)) (Random.list (model.cols * model.rows) (Random.int 0 25))
 
 flashGrid : Model -> Cmd Msg
 flashGrid model =
   let
-    delay = (toFloat (500))
+    delay = (toFloat model.showTime)
   in
     Task.perform TickFail FlashGrid <| Process.sleep delay
 
 promptForAnswer : Model -> Cmd Msg
 promptForAnswer model =
   let
-    delay = (toFloat (50))
+    delay = (toFloat model.delay)
   in
     Task.perform TickFail PromptForAnswer <| Process.sleep delay
 
@@ -147,6 +160,18 @@ view model =
     , br [] []
     , text (toString model.score)
     , button [ onClick StartRound ] [ text "Start" ]
+    , br [] []
+    , text "Show time (ms):"
+    , button [ onClick SpeedDown ] [ text "-" ]
+    , text (toString model.showTime)
+    , button [ onClick SpeedUp ] [ text "+" ]
+    , br [] []
+    , text "Prompt delay (ms):"
+    , button [ onClick DelayDown ] [ text "-" ]
+    , text (toString model.delay)
+    , button [ onClick DelayUp ] [ text "+" ]
+    , br [] []
+    , a [href "http://github.com/DestyNova/iconic-memory-game"] [text "Source"]
     ]
 
 showGrid : Model -> Html Msg
