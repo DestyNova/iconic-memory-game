@@ -8908,6 +8908,10 @@ var _user$project$Main$Model = function (a) {
 		};
 	};
 };
+var _user$project$Main$RowsDown = {ctor: 'RowsDown'};
+var _user$project$Main$RowsUp = {ctor: 'RowsUp'};
+var _user$project$Main$ColsDown = {ctor: 'ColsDown'};
+var _user$project$Main$ColsUp = {ctor: 'ColsUp'};
 var _user$project$Main$DelayDown = {ctor: 'DelayDown'};
 var _user$project$Main$DelayUp = {ctor: 'DelayUp'};
 var _user$project$Main$SpeedDown = {ctor: 'SpeedDown'};
@@ -9070,13 +9074,53 @@ var _user$project$Main$update = F2(
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			default:
+			case 'DelayUp':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
 							delay: A2(_elm_lang$core$Basics$min, 1000, model.delay + 25)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ColsDown':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							cols: A2(_elm_lang$core$Basics$max, 3, model.cols - 1)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'ColsUp':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							cols: A2(_elm_lang$core$Basics$min, 6, model.cols + 1)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'RowsDown':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							rows: A2(_elm_lang$core$Basics$max, 3, model.rows - 1)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							rows: A2(_elm_lang$core$Basics$min, 6, model.rows + 1)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
@@ -9187,6 +9231,64 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$core$Native_List.fromArray(
 					[
 						_elm_lang$html$Html_Events$onClick(_user$project$Main$DelayUp)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('+')
+					])),
+				A2(
+				_elm_lang$html$Html$br,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				_elm_lang$html$Html$text('Columns:'),
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onClick(_user$project$Main$ColsDown)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('-')
+					])),
+				_elm_lang$html$Html$text(
+				_elm_lang$core$Basics$toString(model.cols)),
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onClick(_user$project$Main$ColsUp)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('+')
+					])),
+				A2(
+				_elm_lang$html$Html$br,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				_elm_lang$html$Html$text('Rows:'),
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onClick(_user$project$Main$RowsDown)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('-')
+					])),
+				_elm_lang$html$Html$text(
+				_elm_lang$core$Basics$toString(model.rows)),
+				A2(
+				_elm_lang$html$Html$button,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Events$onClick(_user$project$Main$RowsUp)
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
