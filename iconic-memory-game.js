@@ -8772,7 +8772,8 @@ var _user$project$Main$showGrid = function (model) {
 				[
 					{ctor: '_Tuple2', _0: 'justify-content', _1: 'space-around'},
 					{ctor: '_Tuple2', _0: 'align-items', _1: 'stretch'},
-					{ctor: '_Tuple2', _0: 'display', _1: 'flex'}
+					{ctor: '_Tuple2', _0: 'display', _1: 'flex'},
+					{ctor: '_Tuple2', _0: 'font-size', _1: '24pt'}
 				]))
 		]);
 	return A2(
