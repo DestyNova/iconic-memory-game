@@ -29,6 +29,7 @@ type alias Model =
   , delay : Int
   , score : Int
   , error : String
+  , letters : String
   , showLetters : Bool
   , indicateRow : Bool
   }
@@ -44,22 +45,23 @@ init =
     , delay = 50
     , score = 0
     , error = ""
+    , letters = ""
     , showLetters = False
     , indicateRow = False
   } in
-    (initialState, Cmd.none)
+    (initialState, getNewGrid initialState)
 
 -- UPDATE
 
 type Msg
-  = StartRound | GetNewGrid (Int, List Int) | PromptForAnswer () | FlashGrid () | TickFail () |
+  = StartNextRound () | GetNewGrid (Int, List Int) | PromptForAnswer () | FlashGrid () | TickFail () |
     CheckAnswer String | SpeedUp | SpeedDown | DelayUp | DelayDown | ColsUp | ColsDown | RowsUp | RowsDown
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
-    StartRound ->
-      ({ model | showLetters = False, indicateRow = False }, getNewGrid model)
+    StartNextRound _ ->
+      startRound model
 
     GetNewGrid random ->
       ({ model | showLetters = True, seekRow = (fst random), grid = generateNewGrid (snd random) model.cols }, flashGrid model)
@@ -89,10 +91,11 @@ update msg model =
                                    (String.toList <| String.toUpper letters)
                                    row
                 rowScore = numCorrect * 100 // model.cols
+                model' = {model | score = model.score + rowScore, letters = "", showLetters = True}
               in
-                ({model | score = model.score + rowScore, showLetters = True}, Cmd.none)
+                (model', startNextRound model')
       else
-        (model, Cmd.none)
+        ({model | letters = letters}, Cmd.none)
 
     SpeedDown ->
       ({ model | showTime = Basics.max 100 (model.showTime - 25) }, Cmd.none)
@@ -129,6 +132,9 @@ collate n xs =
     [] -> []
     x -> x :: collate n (List.drop n xs)
 
+startRound model =
+  ({ model | showLetters = False, indicateRow = False }, getNewGrid model)
+
 -- SUBSCRIPTIONS
 
 subscriptions : Model -> Sub Msg
@@ -149,6 +155,10 @@ promptForAnswer : Model -> Cmd Msg
 promptForAnswer model =
   Task.perform TickFail PromptForAnswer <| Process.sleep (toFloat model.delay)
 
+startNextRound : Model -> Cmd Msg
+startNextRound model =
+  Task.perform TickFail StartNextRound <| Process.sleep (toFloat 1000)
+
 -- VIEW
 
 view : Model -> Html Msg
@@ -165,10 +175,9 @@ view model =
 
     [ showGrid model
     , br [] []
-    , input [ placeholder "Letters...", onInput CheckAnswer ] []
+    , input [ placeholder "Letters...", value model.letters, onInput CheckAnswer ] []
     , br [] []
-    , text (toString model.score)
-    , button [ onClick StartRound ] [ text "Start" ]
+    , text <| String.append "Score: " (toString model.score)
     , br [] []
     , text "Show time (ms):"
     , button [ onClick SpeedDown ] [ text "-" ]
