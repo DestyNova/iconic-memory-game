@@ -136,23 +136,18 @@ subscriptions model =
   Sub.none
 
 -- TASKS
+
 getNewGrid : Model -> Cmd Msg
 getNewGrid model =
   Random.generate GetNewGrid <| Random.pair (Random.int 0 (model.rows - 1)) (Random.list (model.cols * model.rows) (Random.int 0 25))
 
 flashGrid : Model -> Cmd Msg
 flashGrid model =
-  let
-    delay = (toFloat model.showTime)
-  in
-    Task.perform TickFail FlashGrid <| Process.sleep delay
+  Task.perform TickFail FlashGrid <| Process.sleep (toFloat model.showTime)
 
 promptForAnswer : Model -> Cmd Msg
 promptForAnswer model =
-  let
-    delay = (toFloat model.delay)
-  in
-    Task.perform TickFail PromptForAnswer <| Process.sleep delay
+  Task.perform TickFail PromptForAnswer <| Process.sleep (toFloat model.delay)
 
 -- VIEW
 
