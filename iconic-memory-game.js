@@ -8873,12 +8873,12 @@ var _user$project$Main$init = function () {
 	var initialState = {
 		grid: A2(
 			_user$project$Main$generateNewGrid,
-			A2(_elm_lang$core$List$repeat, 9, 0),
-			3),
+			A2(_elm_lang$core$List$repeat, 12, 0),
+			4),
 		seekRow: 0,
-		cols: 3,
+		cols: 4,
 		rows: 3,
-		showTime: 500,
+		showTime: 450,
 		delay: 50,
 		score: 0,
 		error: '',
@@ -9135,7 +9135,7 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$html$Html_Attributes$style(
 				_elm_lang$core$Native_List.fromArray(
 					[
-						{ctor: '_Tuple2', _0: 'width', _1: '40%'},
+						{ctor: '_Tuple2', _0: 'width', _1: '20%'},
 						{ctor: '_Tuple2', _0: 'height', _1: '75%'},
 						{ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
 						{ctor: '_Tuple2', _0: 'margin', _1: 'auto'},
