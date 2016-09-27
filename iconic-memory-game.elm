@@ -8,6 +8,7 @@ import Process
 import Random
 import String
 import Task
+import Json.Decode as Json
 
 main =
   App.program
@@ -55,7 +56,8 @@ init =
 
 type Msg
   = StartNextRound () | GetNewGrid (Int, List Int) | PromptForAnswer () | FlashGrid () | TickFail () |
-    CheckAnswer String | SpeedUp | SpeedDown | DelayUp | DelayDown | ColsUp | ColsDown | RowsUp | RowsDown
+    CheckAnswer String | SpeedUp | SpeedDown | DelayUp | DelayDown | ColsUp | ColsDown | RowsUp | RowsDown |
+    SkipOnEnter Int
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -121,6 +123,11 @@ update msg model =
     RowsUp ->
       ({ model | rows = Basics.min 6 (model.rows + 1) }, Cmd.none)
 
+    SkipOnEnter keycode ->
+      case keycode of
+        13 -> startRound model
+        _ -> (model, Cmd.none)
+
 
 generateNewGrid : List Int -> Int -> List (List Char)
 generateNewGrid grid cols =
@@ -133,7 +140,7 @@ collate n xs =
     x -> x :: collate n (List.drop n xs)
 
 startRound model =
-  ({ model | showLetters = False, indicateRow = False }, getNewGrid model)
+  ({ model | letters = "", showLetters = False, indicateRow = False }, getNewGrid model)
 
 -- SUBSCRIPTIONS
 
@@ -175,7 +182,7 @@ view model =
 
     [ showGrid model
     , br [] []
-    , input [ placeholder "Letters...", value model.letters, onInput CheckAnswer ] []
+    , input [ placeholder "Letters, or enter to skip", value model.letters, onInput CheckAnswer, onKeyDown SkipOnEnter ] []
     , br [] []
     , text <| String.append "Score: " (toString model.score)
     , br [] []
@@ -245,3 +252,8 @@ getMarker showMarker symbol =
       ]
   in
     div markerStyle [ text symbol ]
+
+
+onKeyDown : (Int -> msg) -> Attribute msg
+onKeyDown tagger =
+  on "keydown" (Json.map tagger keyCode)
