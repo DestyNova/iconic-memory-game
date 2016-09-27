@@ -20,7 +20,7 @@ TODO: Elm building instructions?
 * [X] Add rounds, click button to reset score and start new round
 * [ ] Round counter
 * [ ] Track high score for tuple (cols, rows, delay)
-* [ ] Show grid less horribly (maybe theme w/ Bootstrap?)
+* [X] Show grid less horribly (maybe theme w/ Bootstrap?)
 * [ ] Replace input field with highlight/enter in-place grid UI
 * [ ] Highlight right/wrong letters in green/red
 * [ ] Pause at end
