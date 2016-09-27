@@ -55,7 +55,7 @@ init =
 -- UPDATE
 
 type Msg
-  = StartNextRound () | GetNewGrid (Int, List Int) | PromptForAnswer () | FlashGrid () | TickFail () |
+  = StartNextRound () | StartRound () | GetNewGrid (Int, List Int) | PromptForAnswer () | FlashGrid () | TickFail () |
     CheckAnswer String | SpeedUp | SpeedDown | DelayUp | DelayDown | ColsUp | ColsDown | RowsUp | RowsDown |
     SkipOnEnter Int
 
@@ -64,6 +64,9 @@ update msg model =
   case msg of
     StartNextRound _ ->
       startRound model
+
+    StartRound _ ->
+      (model, getNewGrid model)
 
     GetNewGrid random ->
       ({ model | showLetters = True, seekRow = (fst random), grid = generateNewGrid (snd random) model.cols }, flashGrid model)
@@ -140,7 +143,7 @@ collate n xs =
     x -> x :: collate n (List.drop n xs)
 
 startRound model =
-  ({ model | letters = "", showLetters = False, indicateRow = False }, getNewGrid model)
+  ({ model | letters = "", showLetters = False, indicateRow = False }, waitToStartRound model)
 
 -- SUBSCRIPTIONS
 
@@ -165,6 +168,10 @@ promptForAnswer model =
 startNextRound : Model -> Cmd Msg
 startNextRound model =
   Task.perform TickFail StartNextRound <| Process.sleep (toFloat 1000)
+
+waitToStartRound : Model -> Cmd Msg
+waitToStartRound model =
+  Task.perform TickFail StartRound <| Process.sleep (toFloat 500)
 
 -- VIEW
 
