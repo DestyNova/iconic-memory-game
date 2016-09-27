@@ -52,7 +52,8 @@ init =
 -- UPDATE
 
 type Msg
-  = StartRound | GetNewGrid (Int, List Int) | PromptForAnswer () | FlashGrid () | TickFail () | CheckAnswer String | SpeedUp | SpeedDown | DelayUp | DelayDown
+  = StartRound | GetNewGrid (Int, List Int) | PromptForAnswer () | FlashGrid () | TickFail () |
+    CheckAnswer String | SpeedUp | SpeedDown | DelayUp | DelayDown | ColsUp | ColsDown | RowsUp | RowsDown
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -104,6 +105,19 @@ update msg model =
 
     DelayUp ->
       ({ model | delay = Basics.min 1000 (model.delay + 25) }, Cmd.none)
+
+    ColsDown ->
+      ({ model | cols = Basics.max 3 (model.cols - 1) }, Cmd.none)
+
+    ColsUp ->
+      ({ model | cols = Basics.min 6 (model.cols + 1) }, Cmd.none)
+
+    RowsDown ->
+      ({ model | rows = Basics.max 3 (model.rows - 1) }, Cmd.none)
+
+    RowsUp ->
+      ({ model | rows = Basics.min 6 (model.rows + 1) }, Cmd.none)
+
 
 generateNewGrid : List Int -> Int -> List (List Char)
 generateNewGrid grid cols =
@@ -170,6 +184,16 @@ view model =
     , button [ onClick DelayDown ] [ text "-" ]
     , text (toString model.delay)
     , button [ onClick DelayUp ] [ text "+" ]
+    , br [] []
+    , text "Columns:"
+    , button [ onClick ColsDown ] [ text "-" ]
+    , text (toString model.cols)
+    , button [ onClick ColsUp ] [ text "+" ]
+    , br [] []
+    , text "Rows:"
+    , button [ onClick RowsDown ] [ text "-" ]
+    , text (toString model.rows)
+    , button [ onClick RowsUp ] [ text "+" ]
     , br [] []
     , a [href "http://github.com/DestyNova/iconic-memory-game"] [text "Source"]
     ]
