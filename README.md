@@ -11,12 +11,12 @@ TODO: Instructions...
 TODO: Elm building instructions?
 
 ## TODO
-- Randomise grid content
-- Grid contents are hidden most of the time and only flashed briefly
-- After input collected:
+* Randomise grid content
+* Grid contents are hidden most of the time and only flashed briefly
+* After input collected:
   - Clear input field
-  - Randomise grid
-  - Restart timers
+  * Randomise grid
+  * Restart timers
 - Add rounds, click button to reset score and start new round
 - Round counter
 - Track high score for tuple (cols, rows, delay)
