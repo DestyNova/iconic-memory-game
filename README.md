@@ -1,6 +1,8 @@
 # The iconic memory game
 A memory game based on the tachistoscope experiments by George Sperling in the 1960s which sought to characterise the visual short-term memory system.
 
+Try it [here](http://iconic.overto.eu/)!
+
 ## Background
 TODO: Better description of Sperling's experiments and their findings
 
