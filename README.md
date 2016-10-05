@@ -15,8 +15,8 @@ TODO: Elm building instructions?
 ## TODO
 * [X] Randomise grid content
 * [X] Grid contents are hidden most of the time and only flashed briefly
-* [ ] After input collected:
-  * [ ] Clear input field
+* [X] After input collected:
+  * [X] Clear input field
   * [X] Randomise grid
   * [X] Restart timers
 * [X] Add rounds, click button to reset score and start new round
@@ -25,8 +25,8 @@ TODO: Elm building instructions?
 * [X] Show grid less horribly (maybe theme w/ Bootstrap?)
 * [ ] Replace input field with highlight/enter in-place grid UI
 * [ ] Highlight right/wrong letters in green/red
-* [ ] Pause at end
+* [X] Pause at end
 * [ ] Cute sound when adding round score
-* [ ] Row/column/delay configurable w/ spinners
+* [X] Row/column/delay configurable w/ spinners
 * [ ] Save highscores in local storage?
 * [X] Put it online w/ gh-pages/DNS
